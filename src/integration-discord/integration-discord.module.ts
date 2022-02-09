@@ -4,6 +4,6 @@ import { IntegrationDiscordController } from './integration-discord.controller';
 
 @Module({
   providers: [IntegrationDiscordService],
-  controllers: [IntegrationDiscordController]
+  controllers: [IntegrationDiscordController],
 })
 export class IntegrationDiscordModule {}
