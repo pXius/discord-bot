@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import DiscordBot from './bot-config';
-
+import DiscordBot from './bot-configuration/DiscordBot';
 @Injectable()
 export class IntegrationDiscordService {
   private bot: DiscordBot;
