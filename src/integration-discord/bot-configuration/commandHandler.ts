@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import * as fs from 'fs';
-import { Collection } from 'discord.js';
+import { Collection, Client } from 'discord.js';
 
 /* 
-Will use this to find each command in commands directory -> helper function
+Finds each command in commands directory -> helper function
 for other functions in this module
 */
-const commandFileNames = fs
+const commandFileNames: string[] = fs
   .readdirSync('./src/integration-discord/bot-configuration/commands')
   .filter((file) => file.endsWith('.ts'))
   .map((fileName) => {
@@ -20,11 +19,11 @@ This function will register all commands in the commands dir on the discord app
 server. This allows for better interaction, ie. Auto complete.
 The call to discord is done with their native REST module.
 
-This is a 2 step process, first, all existing commands are deleted, then a new array
-of commands based off of the files are pushed to the server.
+This is a 2 step process, first, all previously registered commands are deleted, 
+then all commands in commands dir are pushed to the server.
 */
 
-export const deployCommands = async () => {
+export const deployCommands = async (): Promise<void> => {
   console.log('Staring command deployment...');
   const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
   const clientId = process.env.CLIENT_ID;
@@ -58,14 +57,12 @@ export const deployCommands = async () => {
 };
 
 /* 
-This helper function returns a collection of commands form the commands dir.
-<k, v> will be <nameOfCommand, actualCommand>
+Updates the available commands on a client instance with all commands in commands dir
+<k, v> will be <nameOfCommand, commandObject>
 */
-export const updateCommandsCollection = async () => {
-  const commands = new Collection();
+export const updateCommandsCollection = async (client: Client): Promise<void> => {
   for (const file of commandFileNames) {
     const { command }: any = await import(`./commands/${file}`);
-    commands.set(command.data.name, command);
+    client.commands.set(command.data.name, command);
   }
-  return commands;
 };
