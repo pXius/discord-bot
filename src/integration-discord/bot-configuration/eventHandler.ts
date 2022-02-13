@@ -15,7 +15,7 @@ const eventFileNames: string[] = fs
 Sets up listeners on the client instance and will execute events in events dir
 mathing the emitted event name.
 */
-export const setUpEventListeners = async (client: Client) => {
+export const setupEventListeners = async (client: Client) => {
   for (const file of eventFileNames) {
     const { event } = await import(`./events/${file}`);
     if (event.once) {

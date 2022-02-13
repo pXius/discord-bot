@@ -6,6 +6,6 @@ export const command = {
     .setName('beep')
     .setDescription('Replies with Boop!'),
   async execute(interaction: CommandInteraction) {
-    await interaction.reply('Boop!');
+    await interaction.reply({ content: 'Boop', ephemeral: true });
   },
 };

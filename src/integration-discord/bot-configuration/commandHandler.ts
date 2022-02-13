@@ -24,7 +24,6 @@ then all commands in commands dir are pushed to the server.
 */
 
 export const deployCommands = async (): Promise<void> => {
-  console.log('Staring command deployment...');
   const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
   const clientId = process.env.CLIENT_ID;
   const guildId = process.env.GUILD_ID;
@@ -35,7 +34,6 @@ export const deployCommands = async (): Promise<void> => {
   for (const command of existingCommands) {
     try {
       await rest.delete(`${guildCommandsUrl}/${command.id}`);
-      console.log(`${guildCommandsUrl}/${command.id}`);
     } catch (error) {
       console.log(error);
     }
@@ -62,6 +60,7 @@ Updates the available commands on a client instance with all commands in command
 */
 export const updateCommandsCollection = async (client: Client): Promise<void> => {
   for (const file of commandFileNames) {
+    client.commands = new Collection()
     const { command }: any = await import(`./commands/${file}`);
     client.commands.set(command.data.name, command);
   }
