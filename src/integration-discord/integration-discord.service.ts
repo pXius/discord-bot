@@ -1,10 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import DiscordBot from './bot-configuration/DiscordBot';
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { deployCommands, updateCommandsCollection } from './bot-configuration/commandHandler';
+import { setupEventListeners } from './bot-configuration/eventHandler';
+import { Client, Intents } from 'discord.js';
+
 @Injectable()
-export class IntegrationDiscordService {
-  private bot: DiscordBot;
+export class IntegrationDiscordService implements OnModuleInit {
+  private client: Client;
   constructor() {
-    this.bot = new DiscordBot();
-    this.bot.login();
+    this.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
   }
-}
+
+  onModuleInit() {
+    deployCommands(); // on discord server
+    updateCommandsCollection(this.client); // on client instance
+    setupEventListeners(this.client);
+    this.client.login(process.env.DISCORD_TOKEN)
+  }
+} 
