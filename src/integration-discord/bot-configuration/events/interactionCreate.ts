@@ -2,7 +2,7 @@ import { Interaction } from "discord.js";
 
 export const event = {
   name: 'interactionCreate',
-  once: true,
+  
   async execute(interaction: Interaction) {
     if (!interaction.isCommand()) return;
 
