@@ -1,19 +1,31 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { deployCommands, updateCommandsCollection } from './bot-configuration/commandHandler';
 import { setupEventListeners } from './bot-configuration/eventHandler';
 import { Client, Intents } from 'discord.js';
+import { DiscordCommandHandlerService } from './discord-command-handler/discord-command-handler.service';
 
 @Injectable()
 export class IntegrationDiscordService implements OnModuleInit {
-  private client: Client;
-  constructor() {
+  private readonly client: Client;
+  private readonly discordCommandService: DiscordCommandHandlerService;
+
+  constructor(discordCommandService: DiscordCommandHandlerService) {
     this.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+    this.discordCommandService = discordCommandService
   }
 
   onModuleInit() {
-    deployCommands(); // on discord server
-    updateCommandsCollection(this.client); // on client instance
-    setupEventListeners(this.client);
-    this.client.login(process.env.DISCORD_TOKEN)
+    setTimeout(() => {
+      this.discordCommandService.deployCommands(this.client);
+    }, 5000)
+    setupEventListeners(this.client); //TODO: This needs to be a module
   }
+
+  updateClientCommandsLocal(): void {
+    this.discordCommandService.updateCommandsCollection(this.client)
+  }
+
+  login() {
+    this.client.login()
+  }
+
 } 

@@ -34,14 +34,12 @@ export const command = {
 
       if (interaction.options.getSubcommand() === 'channel') {
         const channel = interaction.options.get('channel').channel
-        // TODO: Save channel id to client instance
-        console.log(channel.id)
+        interaction.client.listeningChannel = channel.id
         interaction.reply({ content: `Updated listening channel to: ${channelMention(channel.id)}`, ephemeral: true })
 
       } else if (interaction.options.getSubcommand() === 'role') {
         const role = interaction.options.get('role').role
-        //TODO: Save role id to client instance
-        console.log(role.id)
+        interaction.client.allowedRole = role.id
         interaction.reply({ content: `Allowed interaction role set to: ${roleMention(role.id)}`, ephemeral: true })
 
       } else {
