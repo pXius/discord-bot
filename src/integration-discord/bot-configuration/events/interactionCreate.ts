@@ -1,12 +1,12 @@
-import { Interaction } from "discord.js";
+import { Interaction } from 'discord.js';
 
 export const event = {
   name: 'interactionCreate',
-  
+
   async execute(interaction: Interaction) {
     if (!interaction.isCommand()) return;
 
-    const command = interaction.client.commands.get(interaction.commandName)
+    const command = interaction.client.commands.get(interaction.commandName);
     if (!command) return;
 
     try {
@@ -20,4 +20,3 @@ export const event = {
     }
   },
 };
-

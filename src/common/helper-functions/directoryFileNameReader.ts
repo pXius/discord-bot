@@ -1,12 +1,15 @@
 import * as fs from 'fs';
 
-const directoryFileNameReader = (path: string, fileExtention: string): string[] => {
+const directoryFileNameReader = (
+  path: string,
+  fileExtension: string,
+): string[] => {
   return fs
     .readdirSync(path)
-    .filter((file) => file.endsWith(`.${fileExtention}`))
+    .filter((file) => file.endsWith(`.${fileExtension}`))
     .map((fileName) => {
       return fileName.split('.')[0];
-    })
-}
+    });
+};
 
-export default directoryFileNameReader
+export default directoryFileNameReader;

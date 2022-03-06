@@ -10,22 +10,23 @@ export class IntegrationDiscordService implements OnModuleInit {
 
   constructor(discordCommandService: DiscordCommandHandlerService) {
     this.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-    this.discordCommandService = discordCommandService
+    this.discordCommandService = discordCommandService;
   }
 
   onModuleInit() {
+    this.updateClientCommandsLocal();
     setTimeout(() => {
-      this.discordCommandService.deployCommands(this.client);
-    }, 5000)
+      this.discordCommandService.deployCommands(this.client); //TODO: Needs to happen after login...
+    }, 1000);
+
     setupEventListeners(this.client); //TODO: This needs to be a module
   }
 
   updateClientCommandsLocal(): void {
-    this.discordCommandService.updateCommandsCollection(this.client)
+    this.discordCommandService.updateCommandsCollection(this.client);
   }
 
   login() {
-    this.client.login()
+    this.client.login();
   }
-
-} 
+}

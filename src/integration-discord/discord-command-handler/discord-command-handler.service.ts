@@ -1,18 +1,25 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { Collection, Client, ApplicationCommandDataResolvable } from 'discord.js';
+import {
+  Collection,
+  Client,
+  ApplicationCommandDataResolvable,
+} from 'discord.js';
 import directoryFileNameReader from 'src/common/helper-functions/directoryFileNameReader';
-
 
 @Injectable()
 export class DiscordCommandHandlerService implements OnModuleInit {
-  private readonly COMMAND_FILE_PATH: string = './src/integration-discord/discord-command-handler/commands'
+  private readonly COMMAND_FILE_PATH: string =
+    './src/integration-discord/discord-command-handler/commands';
   private readonly commandFileNames: string[];
   constructor() {
-    this.commandFileNames = directoryFileNameReader(this.COMMAND_FILE_PATH, 'ts')
+    this.commandFileNames = directoryFileNameReader(
+      this.COMMAND_FILE_PATH,
+      'ts',
+    );
   }
 
   onModuleInit() {
-    console.log("Starting Command Handler Service");
+    console.log('Starting Command Handler Service');
   }
 
   /* 
@@ -20,13 +27,13 @@ export class DiscordCommandHandlerService implements OnModuleInit {
   server. This allows for better interaction, ie. Auto complete.
   */
   deployCommands = async (client: Client): Promise<void> => {
-    const newCommands: ApplicationCommandDataResolvable[] = []
+    const newCommands: ApplicationCommandDataResolvable[] = [];
     for (const file of this.commandFileNames) {
       const { command } = await import(`./commands/${file}`);
-      newCommands.push(command.data.toJSON())
+      newCommands.push(command.data.toJSON());
     }
     console.log('Uploading Commands');
-    client.guilds.cache.get(process.env.GUILD_ID).commands.set(newCommands)
+    client.guilds.cache.get(process.env.GUILD_ID).commands.set(newCommands);
   };
 
   /* 
@@ -34,24 +41,24 @@ export class DiscordCommandHandlerService implements OnModuleInit {
   server. 
   */
   deleteCommands = async (client: Client): Promise<void> => {
-    const existingCommands = await client.guilds.cache.get(process.env.GUILD_ID).commands.fetch()
-    existingCommands.forEach(command => {
+    const existingCommands = await client.guilds.cache
+      .get(process.env.GUILD_ID)
+      .commands.fetch();
+    existingCommands.forEach((command) => {
       console.log(`Deleting command: ${command.id}`);
-      command.delete()
-    })
-  }
-
+      command.delete();
+    });
+  };
 
   /* 
   Replaces/Updates available commands on a client instance with all commands in commands dir
   <k, v> will be <nameOfCommand, commandObject>
   */
   updateCommandsCollection = async (client: Client): Promise<void> => {
+    client.commands = new Collection();
     for (const file of this.commandFileNames) {
-      client.commands = new Collection()
       const { command }: any = await import(`./commands/${file}`);
       client.commands.set(command.data.name, command);
     }
   };
-
 }

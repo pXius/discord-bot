@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { Client } from 'discord.js';
 
 /* 
-Filter out all events based on name within events direcotry
+Filter out all events based on name within events directory
 */
 const eventFileNames: string[] = fs
   .readdirSync('./src/integration-discord/bot-configuration/events')
@@ -13,7 +13,7 @@ const eventFileNames: string[] = fs
 
 /* 
 Sets up listeners on the client instance and will execute events in events dir
-mathing the emitted event name.
+matching the emitted event name.
 */
 export const setupEventListeners = async (client: Client) => {
   for (const file of eventFileNames) {
@@ -24,5 +24,4 @@ export const setupEventListeners = async (client: Client) => {
       client.on(event.name, (...args) => event.execute(...args));
     }
   }
-}
-
+};
