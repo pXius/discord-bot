@@ -3,6 +3,6 @@ import { DiscordCommandHandlerService } from './discord-command-handler.service'
 
 @Module({
   providers: [DiscordCommandHandlerService],
-  exports: [DiscordCommandHandlerService]
+  exports: [DiscordCommandHandlerService],
 })
 export class DiscordCommandHandlerModule {}
