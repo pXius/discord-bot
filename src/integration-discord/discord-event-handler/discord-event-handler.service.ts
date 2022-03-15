@@ -14,6 +14,9 @@ export class DiscordEventHandlerService implements OnModuleInit {
     console.log('Starting Event Handler Service');
   }
 
+  /* 
+ Reads all events in the events folders and sets up listeners to to fire logic based on emit message.
+*/
   setupEventListeners = async (client: Client) => {
     for (const file of this.eventFileNames) {
       const { event } = await import(`./events/${file}`);
