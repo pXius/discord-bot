@@ -20,15 +20,22 @@ export class IntegrationDiscordService implements OnModuleInit {
 
   onModuleInit() {
     this.updateClientCommandsLocal();
-    setTimeout(() => {
-      this.discordCommandService.deployCommands(this.client); //TODO: Needs to happen after login...
-    }, 1000);
+    this.client.on('ready', () => {
+      this.deployCommands();
+    });
+    this.setupEventListeners();
+  }
 
-    this.discordEventService.setupEventListeners(this.client);
+  deployCommands(): void {
+    this.discordCommandService.deployCommands(this.client);
   }
 
   updateClientCommandsLocal(): void {
     this.discordCommandService.updateCommandsCollection(this.client);
+  }
+
+  setupEventListeners(): void {
+    this.discordEventService.setupEventListeners(this.client);
   }
 
   login(): void {

@@ -6,11 +6,18 @@ import {
 import { ChannelType } from 'discord-api-types';
 import { CommandInteraction } from 'discord.js';
 
+/* 
+The following set commands are used to select the channel in which the bot will listen
+as well as the user roles allowed to execute commands.
+TODO: Permission service
+*/
+
 export const command = {
   data: new SlashCommandBuilder()
     .setName('set')
     .setDescription('Bot Configuration')
-    // Chanel seclecion command
+
+    // Chanel selection command
     .addSubcommand((subCommand) =>
       subCommand
         .setName('channel')
@@ -24,7 +31,7 @@ export const command = {
         ),
     )
 
-    // Role seclection command
+    // Role selection command
     .addSubcommand((subCommand) =>
       subCommand
         .setName('role')

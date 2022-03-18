@@ -8,4 +8,3 @@ import { DiscordEventHandlerModule } from 'src/integration-discord/discord-event
   providers: [IntegrationDiscordService],
 })
 export class IntegrationDiscordModule {}
-// DiscordCommandHandlerServices
