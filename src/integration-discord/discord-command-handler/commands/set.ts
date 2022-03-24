@@ -7,15 +7,15 @@ import { ChannelType } from 'discord-api-types';
 import { CommandInteraction } from 'discord.js';
 
 /* 
-The following set commands are used to select the channel in which the bot will listen
-as well as the user roles allowed to execute commands.
-TODO: Permission service
+The following /set commands are used to add a channel to which the bot will listen to
+as well as adding user roles allowed to execute commands.
 */
 
 export const command = {
   data: new SlashCommandBuilder()
     .setName('set')
     .setDescription('Bot Configuration')
+    .setDefaultPermission(false)
 
     // Chanel selection command
     .addSubcommand((subCommand) =>
@@ -53,18 +53,16 @@ export const command = {
     } else {
       if (interaction.options.getSubcommand() === 'channel') {
         const channel = interaction.options.get('channel').channel;
-        interaction.client.listeningChannel = channel.id;
+        interaction.client.listeningChannels.push(channel.id);
         interaction.reply({
-          content: `Updated listening channel to: ${channelMention(
-            channel.id,
-          )}`,
+          content: `Listening to channel: ${channelMention(channel.id)}`,
           ephemeral: true,
         });
       } else if (interaction.options.getSubcommand() === 'role') {
         const role = interaction.options.get('role').role;
-        interaction.client.allowedRole = role.id;
+        interaction.client.allowedRoles.push(role.id);
         interaction.reply({
-          content: `Allowed interaction role set to: ${roleMention(role.id)}`,
+          content: `${roleMention(role.id)} added to allowed interaction roles`,
           ephemeral: true,
         });
       } else {

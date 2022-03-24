@@ -4,10 +4,21 @@ export const event = {
   name: 'interactionCreate',
 
   async execute(interaction: Interaction) {
-    if (!interaction.isCommand()) return;
+    if (!interaction.isCommand()) {
+      return;
+    }
+
+    if (
+      interaction.client.listeningChannels.length &&
+      !interaction.client.listeningChannels.includes(interaction.channelId)
+    ) {
+      return;
+    }
 
     const command = interaction.client.commands.get(interaction.commandName);
-    if (!command) return;
+    if (!command) {
+      return;
+    }
 
     try {
       await command.execute(interaction);
