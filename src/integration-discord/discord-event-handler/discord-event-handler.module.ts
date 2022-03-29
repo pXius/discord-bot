@@ -3,6 +3,6 @@ import { DiscordEventHandlerService } from './discord-event-handler.service';
 
 @Module({
   providers: [DiscordEventHandlerService],
-  exports: [DiscordEventHandlerService],
+  exports: [DiscordEventHandlerService]
 })
 export class DiscordEventHandlerModule {}

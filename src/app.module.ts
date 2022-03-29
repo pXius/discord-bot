@@ -3,6 +3,6 @@ import { IntegrationDiscordModule } from './integration-discord/integration-disc
 
 @Module({
   imports: [IntegrationDiscordModule],
-  providers: [],
+  providers: []
 })
 export class AppModule {}

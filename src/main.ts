@@ -1,7 +1,7 @@
-import "dotenv/config";
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
-import { IntegrationDiscordService } from "src/integration-discord/integration-discord.service";
+import 'dotenv/config';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { IntegrationDiscordService } from 'src/integration-discord/integration-discord.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
