@@ -1,8 +1,8 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { Client, Intents } from 'discord.js';
-import { DiscordCommandHandlerService } from './discord-command-handler/discord-command-handler.service';
-import { DiscordEventHandlerService } from './discord-event-handler/discord-event-handler.service';
-import { DiscordCommandPermissionsService } from './discord-command-permissions/discord-command-permissions.service';
+import { Injectable, OnModuleInit } from "@nestjs/common";
+import { Client, Intents } from "discord.js";
+import { DiscordCommandHandlerService } from "./discord-command-handler/discord-command-handler.service";
+import { DiscordEventHandlerService } from "./discord-event-handler/discord-event-handler.service";
+import { DiscordCommandPermissionsService } from "./discord-command-permissions/discord-command-permissions.service";
 
 @Injectable()
 export class IntegrationDiscordService implements OnModuleInit {
@@ -14,7 +14,7 @@ export class IntegrationDiscordService implements OnModuleInit {
   constructor(
     discordCommandService: DiscordCommandHandlerService,
     discordEventService: DiscordEventHandlerService,
-    discordCommandPermissionsService: DiscordCommandPermissionsService,
+    discordCommandPermissionsService: DiscordCommandPermissionsService
   ) {
     this.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
     this.discordCommandService = discordCommandService;
@@ -26,12 +26,12 @@ export class IntegrationDiscordService implements OnModuleInit {
     this.client.listeningChannels = [];
     this.updateClientCommandsLocal();
     this.setupEventListeners();
-    this.client.on('ready', () => {
+    this.client.on("ready", () => {
       this.deployCommands();
     });
     setTimeout(() => {
       this.discordCommandPermissionsService.initialOwnerPermissions(
-        this.client,
+        this.client
       );
     }, 5000);
   }
